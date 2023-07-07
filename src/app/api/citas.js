@@ -1,6 +1,6 @@
 import Base from './base'
 
-const endpoint = '/curso';
+const endpoint = '/cita';
 
 const create = async (request) => await Base.post(endpoint,request);
 
@@ -20,6 +20,6 @@ const remove = async(id) => {
     return await Base.remove(newEndpoint);
 }
 
-const CursosApi = { create, findAll, findOne, update, remove }
+const CitasApi = { create, findAll, findOne, update, remove }
 
-export default CursosApi;
+export default CitasApi;
