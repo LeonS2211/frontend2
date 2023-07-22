@@ -22,7 +22,11 @@ const handleClick = () => {
     setAsideVisible(!asideVisible);
   };
 
-
+  useEffect(() => {
+    // Cargar bootstrap.bundle.js solo en el cliente
+    import('bootstrap/dist/js/bootstrap.bundle.js');
+  }, []);
+  
 const handleClick1 = () => {
   window.location.href = "/principal"
 }
@@ -50,7 +54,7 @@ const handleClick5 = () => {
       <head>
 
       </head>
-      <body className='body'>
+      <body className='background'>
       {(loggedIn === null) ? 
       <div>
         <header className='cabecera'>
