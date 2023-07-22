@@ -1,32 +1,42 @@
 'use client'
 import "../login/page.modul.css"
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import Button from '../../components/Button/Button.jsx';
 import Form from 'react-bootstrap/Form';
 import Link from '../../components/Link/Link.jsx';
 import { Dangrek } from "next/font/google";
 import FilterNames from "@/components/FilterNames/FilterNames.jsx";
+import PersonasApi from "../api/personas";
+import CarrerasApi from "../api/carreras";
 
 const Login = () => {
 
   const [errorIn, setErrorIn] = useState("");
-  const basedatosO=JSON.parse(localStorage.getItem('basedatos'))
+  const [personas, setPersonas] = useState([]);
+  const [carreras, setCarreras] = useState([])
+
+  const handleOnLoad = async () =>{
+    const result = await PersonasApi.findAll()
+    setPersonas(result.data)
+    const result2 = await CarrerasApi.findAll()
+    setCarreras(result2.data)
+  }
+
 
   localStorage.setItem('loggedIn', null)
 
 
   const handleSubmit = (event) => {
-    
     event.preventDefault();
 
     var uname= document.getElementById('unameL'); 
     var pass = document.getElementById('passL');
 
     
-    var userData = basedatosO.find((user) => user.email === uname.value);
+    var userData = personas.find((user) => user.email == uname.value);
 
     if (userData) {
-      if (userData.password !== pass.value) {
+      if (userData.contraseña != pass.value) {
        
         setErrorIn("pass");
       } else {
@@ -37,6 +47,11 @@ const Login = () => {
       setErrorIn("uname");
     }
   };
+
+  useEffect(() => {
+    handleOnLoad();
+  }, [])
+
   const handleSalir = (event) => {
     event.preventDefault();
 
@@ -71,7 +86,7 @@ const Login = () => {
         </div>
         </Form>
         </div>
-        <div><FilterNames></FilterNames></div>
+        
       </div>
   );
 }
