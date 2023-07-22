@@ -22,7 +22,11 @@ const handleClick = () => {
     setAsideVisible(!asideVisible);
   };
 
-
+  useEffect(() => {
+    // Cargar bootstrap.bundle.js solo en el cliente
+    import('bootstrap/dist/js/bootstrap.bundle.js');
+  }, []);
+  
 const handleClick1 = () => {
   window.location.href = "/principal"
 }

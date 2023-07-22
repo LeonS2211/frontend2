@@ -8,7 +8,6 @@ import { Dangrek } from "next/font/google";
 import FilterNames from "@/components/FilterNames/FilterNames.jsx";
 import PersonasApi from "../api/personas";
 import CarrerasApi from "../api/carreras";
-import UniversidadesApi from "../api/universidades";
 
 const Login = () => {
 
@@ -87,9 +86,7 @@ const Login = () => {
         </div>
         </Form>
         </div>
-        <div><FilterNames 
-        Lpersonas={personas}
-        Lcarreras={carreras}></FilterNames></div>
+        
       </div>
   );
 }
