@@ -6,10 +6,8 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 
-
-const FilterNames =()=>{
-    const baseDatos = JSON.parse(localStorage.getItem('basedatos'))
-    const profesores = baseDatos.filter(f => (f.role)=="profesor")
+const FilterNames =({Lpersonas, Lcarreras})=>{
+    const profesores = Lpersonas.filter(f => (f.role.descripcion)=="Profesor")
     const [arr, setArr] = useState(profesores)
     const [visual,setVisual] = useState("Nom")
     const [textBusqueda, setTextBusqueda] = useState("")
@@ -45,7 +43,7 @@ const FilterNames =()=>{
                     { arr.filter(f => (f.nombre).includes(textBusqueda))
                         .map(profesor =>{
                         return (<li key={profesor.nombre} >
-                            <Chip nombre={profesor.nombre} curso={profesor.curso} handleCita={(event) => handleCita(event, { profesor })}/>
+                            <Chip nombre={profesor.nombre} carrera={(Lcarreras.filter(f => (f.id)==profesor.idCarrera)).descripcion} universidad={(Lcarreras.filter(f => (f.id)==profesor.idCarrera)).universidade.descripcion} handleCita={(event) => handleCita(event, { profesor })}/>
                             </li>)
                     }) } 
                  </ul>
@@ -56,7 +54,7 @@ const FilterNames =()=>{
                     { arr.filter(f => (f.horarios).includes(textBusqueda))
                         .map(profesor =>{
                         return (<li key={profesor.nombre} >
-                            <Chip nombre={profesor.nombre} curso={profesor.curso} handleCita={(event) => handleCita(event, { profesor })}/>
+                            <Chip nombre={profesor.nombre} carrera={(Lcarreras.filter(f => (f.id)==profesor.idCarrera)).descripcion} universidad={(Lcarreras.filter(f => (f.id)==profesor.idCarrera)).universidade.descripcion} handleCita={(event) => handleCita(event, { profesor })}/>
                             </li>)
                     }) } 
                  </ul>
