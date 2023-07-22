@@ -3,7 +3,7 @@
     display: grid;
     grid-template-rows: 0.3fr 0.01fr 4fr 4fr ; /* Divide en 3 columnas de igual ancho */
     grid-gap: 15px; /* Espacio entre las secciones */
-    color:black;
+    color:#74ff76;
     padding-left: 1vw;
     width: 1000px;
     position: absolute;
@@ -39,6 +39,7 @@
     font-size: 18px;
     font-weight: bold;
     height: 80%;
+    width: 80%;
 
 
   }
@@ -46,7 +47,7 @@
     font-size: 18px;
     font-weight: bold;
     width: 100%; /* Ajusta el ancho según tus necesidades */
-    background-color: rgba(39, 26, 155, 0.89);
+    background-color: rgba(135, 253, 155, 0.89);
 
   }
   .fr{
