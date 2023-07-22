@@ -7,10 +7,9 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 
 const FilterNames =({Lpersonas, Lcarreras})=>{
-    const profesores = Lpersonas.filter(f => (f.role.descripcion)=="Profesor")
-    const [arr, setArr] = useState(profesores)
     const [visual,setVisual] = useState("Nom")
     const [textBusqueda, setTextBusqueda] = useState("")
+    const profes = Lpersonas.filter( per => per.role.descripcion == "Profesor")
 
     const handleCita =({profesor},event)=>{
         event.preventDefault()
@@ -19,6 +18,9 @@ const FilterNames =({Lpersonas, Lcarreras})=>{
 
     const handleClickNom =(event)=>{
         event.preventDefault()
+        console.log(Lpersonas)
+        console.log(Lcarreras)
+        console.log(profes)
         setVisual("Nom")
     }
 
@@ -40,10 +42,10 @@ const FilterNames =({Lpersonas, Lcarreras})=>{
                 </ButtonGroup>
                 {(visual == "Nom") ?
                  <ul className="nobullets">
-                    { arr.filter(f => (f.nombre).includes(textBusqueda))
+                    { profes.filter(f => (f.nombre).includes(textBusqueda))
                         .map(profesor =>{
                         return (<li key={profesor.nombre} >
-                            <Chip nombre={profesor.nombre} carrera={(Lcarreras.filter(f => (f.id)==profesor.idCarrera)).descripcion} universidad={(Lcarreras.filter(f => (f.id)==profesor.idCarrera)).universidade.descripcion} handleCita={(event) => handleCita(event, { profesor })}/>
+                            <Chip nombre={profesor.nombre} carrera={(Lcarreras?.filter(f => (f.id)==profesor.idCarrera)).nombre} universidad={(Lcarreras.filter(f => (f.id)==profesor.idCarrera)).universidade.descripcion} handleCita={(event) => handleCita(event, { profesor })}/>
                             </li>)
                     }) } 
                  </ul>
@@ -51,7 +53,7 @@ const FilterNames =({Lpersonas, Lcarreras})=>{
                 :
                  <div>
                     <ul className="nobullets">
-                    { arr.filter(f => (f.horarios).includes(textBusqueda))
+                    { profes.filter(f => (f.horarios).includes(textBusqueda))
                         .map(profesor =>{
                         return (<li key={profesor.nombre} >
                             <Chip nombre={profesor.nombre} carrera={(Lcarreras.filter(f => (f.id)==profesor.idCarrera)).descripcion} universidad={(Lcarreras.filter(f => (f.id)==profesor.idCarrera)).universidade.descripcion} handleCita={(event) => handleCita(event, { profesor })}/>
