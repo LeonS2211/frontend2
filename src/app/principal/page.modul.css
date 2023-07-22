@@ -6,7 +6,7 @@
     color:#74ff76;
     padding-left: 1vw;
     width: 1000px;
-    position: absolute;
+    position: fixed;
   }
   .welcome-text{
     font-size: 30px;
