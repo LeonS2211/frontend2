@@ -83,7 +83,7 @@ const Login = () => {
           </Form>
         <Form onSubmit={handleSalir}>
         <div className="op3">
-        <Button variant="danger" type="submit"  texto="Salir"/>
+        <Button  type="submit"  texto="Salir"/>
         </div>
         </Form>
         </div>

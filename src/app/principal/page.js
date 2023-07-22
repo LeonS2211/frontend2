@@ -2,18 +2,33 @@
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import './page.modul.css'
-import Chip from '../../components/Chip/Chip.jsx'
+import ChipA from '../../components/ChipOriginal/ChipO.jsx'
 import { useState } from 'react'
 import { useEffect } from 'react';
 import BotonCalif from '@/components/BotonCalif/BotonCalif'
-import citasAc from '../../api/citasAc'
+import citasAc from '../api/citas.js'
 import FilterNames from '@/components/FilterNames/FilterNames'
 
 const pDocentes = () => {
-
-
+    const citaDefault = {id: 1,
+    idPersonaDocente: 0, 
+    idPersonaAlumno: 0, 
+    Fecha: "", 
+    horainicio: "", 
+    horafin:"", 
+    enlaceSesion:"https://www.flaticon.es/icono-gratis/enlace_1063309", 
+    estado:"", 
+    idCurso: 0}
+    const [ citas, setCitas ] = useState([])
+    const [ cita, setCita ] = useState(citaDefault)
     var loggedIn = JSON.parse(localStorage.getItem('loggedIn'))
-    const arr = citasAc.getAll();
+    const handleOnLoad = async () => {
+        const arr = await citasAc.findAll(citaDefault);
+        setCitas(arr.data);
+    }
+    useEffect(() => {
+        handleOnLoad();
+    }, [])
 
     return(
         <div>
@@ -24,11 +39,11 @@ const pDocentes = () => {
       <div className='block-citas'>
           <p>Proximas Citas</p>
           <div className='citas'>
-                    {
-                        arr.map(citas=>{
-                            return (<div className='fr' key={citas}><Chip text={citas.nombre} fecha={citas.fecha}/> </div>)
-                        })
-                    }
+                  {
+                      citas.map(citas=>{
+                          return (<div className='fr' key={citas.id}><ChipA inicial={citas.estado} nombre={citas.estado} fecha={citas.Fecha}/> </div>)
+                      })
+                  }
           </div>
       
         </div>
@@ -44,8 +59,8 @@ const pDocentes = () => {
         <p>Proximas Citas</p>
         <div className='citas'>
                   {
-                      arr.map(citas=>{
-                          return (<div className='fr' key={citas}><Chip text={citas.nombre} fecha={citas.fecha}/> </div>)
+                      citas.map(citas=>{
+                          return (<div className='fr' key={citas.id}><ChipA inicial={citas.estado} nombre={citas.estado} fecha={citas.Fecha}/> </div>)
                       })
                   }
         </div>
