@@ -1,12 +1,12 @@
 import React from 'react';
-
-const PersonalInfo = ({ persona, setPersona }) => {
+import PersonasApi from '@/app/api/personas';
+const PersonalInfo = ({persona, setPersona, nombre, apellido, tipoDocumento, numeroDocumento, idRol }) => {
   const handleNombresChange = (e) => {
-    setPersona({ ...persona, nombres: e.target.value });
+    setPersona({ ...persona, nombre: e.target.value });
   };
 
   const handleApellidosChange = (e) => {
-    setPersona({ ...persona, apellidos: e.target.value });
+    setPersona({ ...persona, apellido: e.target.value });
   };
 
   const handleTipoDocumentoChange = (e) => {
@@ -14,55 +14,70 @@ const PersonalInfo = ({ persona, setPersona }) => {
   };
 
   const handleNumeroChange = (e) => {
-    setPersona({ ...persona, numero: e.target.value });
+    setPersona({ ...persona, dni: e.target.value });
   };
 
   const handleRolChange = (e) => {
-    setPersona({ ...persona, rol: e.target.value });
+    setPersona({ ...persona, idrol: e.target.value });
   };
 
   return (
-    <div>
+    <div className="Datos">
       <h3>Información Personal</h3>
-      <label htmlFor="nombres">Nombres</label>
-      <input
-        type="text"
-        id="nombres"
-        value={persona.nombres}
-        onChange={handleNombresChange}
-      />
 
-      <label htmlFor="apellidos">Apellidos</label>
-      <input
-        type="text"
-        id="apellidos"
-        value={persona.apellidos}
-        onChange={handleApellidosChange}
-      />
+      <div className="ParteDatos">
+              <div className="NombrePersona">
+                  <label className="label1" htmlFor="nombre">Nombres</label>
+                  <input className="input1"
+                    type="text"
+                    id="nombre"
+                    value={nombre}
+                    onChange={handleNombresChange}
+                  />
+              </div>
+              
+              <div className="ApellidoPersona">
+                <label className="label2" htmlFor="apellido">Apellidos</label>
+                <input className="input2"
+                  type="text"
+                  id="apellido"
+                  value={apellido}
+                  onChange={handleApellidosChange}
+                />
+              </div>
+              <div className="TipoDocumento">
+                  <label className="label3" htmlFor="tipoDocumento">Tipo de documento</label>
+                  <input className="input3"
+                    type="text"
+                    id="tipoDocumento"
+                    value={tipoDocumento}
+                    onChange={handleTipoDocumentoChange}
+                  />
+              </div>
 
-      <label htmlFor="tipodocumento">Tipo de documento</label>
-      <input
-        type="text"
-        id="tipodocumento"
-        value={persona.tipodocumento}
-        onChange={handleTipoDocumentoChange}
-      />
+              <div className="Rol">
+                <label className="label5" htmlFor="idRol">Rol</label>
+                <input className="input5"
+                  type="text"
+                  id="idRol"
+                  value={idRol}
+                  onChange={handleRolChange}
+                />
+              </div>
 
-      <label htmlFor="numero">Número</label>
-      <input
-        type="text"
-        id="numero"
-        value={persona.numero}
-        onChange={handleNumeroChange}
-      />
+              <div className="Numero">
+                <label className="label4" htmlFor="numeroDocumento">Número</label>
+                <input className="input4"
+                  type="text"
+                  id="numeroDocumento"
+                  value={numeroDocumento}
+                  onChange={handleNumeroChange}
+                />
+              </div>
+      </div>
+      
 
-      <label htmlFor="rol">Rol</label>
-      <input
-        type="text"
-        id="rol"
-        value={persona.rol}
-        onChange={handleRolChange}
-      />
+      
     </div>
   );
 };
