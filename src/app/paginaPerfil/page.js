@@ -1,5 +1,9 @@
 'use client';
-import React, { useState } from 'react';
+import PersonasApi from '../api/personas.js';
+import CarrerasApi from '../api/carreras.js';
+import CursosApi from '../api/cursos.js';
+import UniversidadesApi from '../api/universidades.js';
+import axios from 'axios';
 import PersonalInfo from '../../components/PersonalInfo/PersonalInfo.jsx';
 import UserData from '../../components/UserData/UserData.jsx';
 import University from '../../components/University/University.jsx';
@@ -8,17 +12,92 @@ import './styles.css'
 import { Button } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import Tab from 'react-bootstrap/Tab';
+import React, { useEffect, useState } from 'react';
+
 
 import { Modal } from 'react-bootstrap';
 
 const paginaPerfil = () => {
-  const [persona, setPersona] = useState({
+  const personaDefault = {idPersona:"",nombre:"",apellido:"",tipoDocumento:"",
+  dni:"",idrol:"",email:"",contraseña:"",idCarrera:"",titulopresentacion:"",presentacion:"",grado:""}
+
+  const rolDefault = {idRol:"",descripcion:""}
+  const carreraDefault = {idCarrera:"",nombre:"",idUniversidad:""}
+  const universidadDefault = {idUniversidad:"",descripcion:""}
+  const cursoDefault = {idCurso:"",idUniversidad:"",nombre:""}
+  const personaCursoDefault = {idPersonaCurso:"",idPersona:"",idCurso:""}
+
+  const[personas, setPersonas] = useState([])
+  const[persona, setPersona]=useState(personaDefault)
+  const[roles, setRoles] = useState([])
+  const[rol, setRol]=useState(rolDefault)
+  const[universidades, setUniversidades] = useState([])
+  const[universidad, setUniversidad]=useState(universidadDefault)
+  const[cursos, setCursos] = useState([])
+  const[curso, setCurso]=useState(cursoDefault)
+  const[carreras, setCarreras] = useState([])
+  const[carrera, setCarrera]=useState(carreraDefault)
+  const[personasCursos, setPersonasCursos] = useState([])
+  const[personaCurso, setPersonaCurso]=useState(personaCursoDefault)
+  const [isFormVisible, setIsFormVisible ] = useState(false)
+  const [ isNew, setIsNew ] = useState(true)
+  const [ alertData, setAlertData ] = useState({ isVisible: false, message: '', variant: 'success'})
+
+
+  useEffect(() => {
+  const fetchUniversidades  = async () => {
+    /*const result = await PersonasApi.findAll();
+    setPersonas(result.data);*/
+
+
+    try {
+      
+      const personasResponse = await PersonasApi.findAll();
+      const personasData = personasResponse.data;
+      setPersonas(personasData);
+      
+
+      if (personasData.length > 0) {
+        const firstPersona = personasData[0];
+        setPersona({
+          ...persona,
+          titulopresentacion: firstPersona.titulopresentacion,
+          presentacion: firstPersona.presentacion
+        });
+      }
+      const universidadesResponse = await UniversidadesApi.findAll();
+      const universidadesData = universidadesResponse.data;
+      setUniversidades(universidadesData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  fetchUniversidades();
+ 
+  }, []) ;
+  
+
+  const handleGuardarDatosPersona = async (persona) => {
+    if (isNew)
+        await PersonasApi.create(persona);
+    else
+        await PersonasApi.update(persona);
+    
+    handleOnLoad();
+    setAlertData({...alertData, isVisible: true, message:'Datos guardados exitosamente.'})
+    handleCancelarDatosPersona();
+  }
+  const handleCancelarDatosPersona = () => {
+    setIsFormVisible(false);
+  }
+
+  /*const [persona, setPersona] = useState({
     nombres: '',
     apellidos: '',
     tipodocumento: '',
     numero: '',
     rol: ''
-  });
+  });*/
 
   const [usuario, setUsuario] = useState({
     usuario: '',
@@ -33,18 +112,41 @@ const paginaPerfil = () => {
   });
 
 
-  const universidad =["ulima", "pucp", "up", "unmsm", "uni", "usmp"]
-    const [arr1,setArr1] = useState(universidad)
-    const [textBusqueda1, setTextBusqueda1] = useState("")
+  //const universidad =["ulima", "pucp", "up", "unmsm", "uni", "usmp"]
+  /*const universidad1 = persona.idCarrera.idUniversidad.descripcion
+    const [arr1,setArr1] = useState(universidad1)
+    const [textBusqueda1, setTextBusqueda1] = useState("")*/
 
-    const carrera = ["informatica", "software", "cienciaComp", "sistemas"]
-    const [arr2,setArr2] = useState(carrera)
+
+    /*const universidad1 = persona && persona.idCarrera && persona.idCarrera.idUniversidad ? persona.idCarrera.idUniversidad.descripcion : '';
+const [arr1, setArr1] = useState(universidad1);
+const [textBusqueda1, setTextBusqueda1] = useState('');*/
+
+//const universidad1 = universidades.find((u) => u.idUniversidad === persona.idCarrera.idUniversidad)?.descripcion || '';
+const universidadArr = personas.map((persona) => persona?.idCarrera?.idUniversidad?.descripcion || "");
+
+const [arr1, setArr1] = useState(universidadArr );
+const [textBusqueda1, setTextBusqueda1] = useState("");
+
+  //const carrera = ["informatica", "software", "cienciaComp", "sistemas"]
+  //const carrera1 = persona.idCarrera.nombre
+  const carreraArr = personas.map((persona) => persona.idCarrera.nombre);
+    const [arr2,setArr2] = useState(carreraArr)
     const [textBusqueda2, setTextBusqueda2] = useState("")
 
-    const curso = ["prograWeb", "SistOpe", "Lp", "ArqSoft"]
-    const [arr3,setArr3] = useState(curso)
-    const [textBusqueda3, setTextBusqueda3] = useState("")
 
+  
+  /*const curso1 = persona.idPersona.idCurso.nombre
+  //const curso = ["prograWeb", "SistOpe", "Lp", "ArqSoft"]
+    const [arr3,setArr3] = useState(curso)
+    const [textBusqueda3, setTextBusqueda3] = useState("")*/
+    //const curso1 = persona && persona.idPersona && persona.idPersona.idCurso ? persona.idPersona.idCurso.nombre : '';
+    const cursoArr = personas.map((persona) => persona.idPersona?.idCurso?.nombre || '');
+
+
+    const [arr3, setArr3] = useState(cursoArr);
+    const [textBusqueda3, setTextBusqueda3] = useState('');
+    
     const handleUniversidadChange = (e) => {
       setTextBusqueda1(e.target.value);
     };
@@ -86,19 +188,26 @@ const paginaPerfil = () => {
   };
 
   return (
-    <div>
+    <div className="contenedorSecundario">
 
-      <div>
-                    <h3>MI PERFIL</h3>
-                    <div>
-                    <Button onClick={() => handleDatosPersonaChange()}>GUARDAR</Button>
-                    </div>
+      <div className="cabeceraPerfil">
+              <h3 className="tituloPerfil">MI PERFIL</h3>
+              <Button className="botonCancelar" onClick={() => handleCancelarDatosPersona() }>CANCELAR</Button>
+              <Button className="botonGuardar" onClick={() => handleGuardarDatosPersona() }>GUARDAR</Button>
       </div>
-      <div>
+      <div className="InfoPersonal">
         
-        <PersonalInfo persona={persona} setPersona={setPersona} />
+        <PersonalInfo className="DatosPersona" 
+          
+          persona={persona}
+          setPersona={setPersona}
+          nombre={persona.nombre}
+          apellido={persona.apellido}
+          tipoDocumento={persona.tipoDocumento}
+          numeroDocumento={persona.dni}
+          idRol={persona.idrol} />
 
-        <div>
+        <div className="profile-name">
               <div className="profile-image-container">
                 {selectedImage ? (
                   <img src={selectedImage} alt="Mi Imagen" className="profile-image" />
@@ -129,12 +238,8 @@ const paginaPerfil = () => {
 
       </div>
 
-      <div>
-        <p>------------------------------------------------------------</p>
-        <h3>Contenido de la página principal</h3>
-
-
-
+      <div className="DatosSecundarios">
+        
         <Tab.Container defaultActiveKey="userData">
           <Nav variant="tabs">
             <Nav.Item>
@@ -147,34 +252,27 @@ const paginaPerfil = () => {
               <Nav.Link eventKey="presentation">Presentation</Nav.Link>
             </Nav.Item>
           </Nav>
+          
+          
+            {personas.map((persona) => (
+              <Tab.Pane key={persona.idPersona} eventKey={`userData-${persona.idPersona}`}>
+                <UserData className="userData1" usuario={usuario} setUsuario={setUsuario} persona={persona} />
 
-          <Tab.Content>
-            <Tab.Pane eventKey="userData">
-              <UserData usuario={usuario} setUsuario={setUsuario} />
-
+              </Tab.Pane>
+            ))}
 
               
 
-            </Tab.Pane>
-
-
             <Tab.Pane eventKey="university">
-              <University
-                arr1={arr1}
-                arr2={arr2}
-                arr3={arr3}
-                textBusqueda1={textBusqueda1}
-                setTextBusqueda1={setTextBusqueda1}
-                textBusqueda2={textBusqueda2}
-                setTextBusqueda2={setTextBusqueda2}
-                textBusqueda3={textBusqueda3}
-                setTextBusqueda3={setTextBusqueda3}
-              />
+            <University universidades={universidades} carreras={carreras} cursos={cursos} />
             </Tab.Pane>
             <Tab.Pane eventKey="presentation">
-              <Presentation presentacion={presentacion} setPresentacion={setPresentacion} />
+              <Presentation presentacion={presentacion}
+                    setPresentacion={setPresentacion}
+                    tituloPresentacion={persona.titulopresentacion}
+                    presentacionPersona={persona.presentacion} />
             </Tab.Pane>
-          </Tab.Content>
+          
         </Tab.Container>
       </div>
     </div>

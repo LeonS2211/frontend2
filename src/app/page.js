@@ -23,7 +23,7 @@ useEffect(() => {
       <div className={styles.red}>
         <Link href="/login " text="BIENVENIDO AL MUNDO MAGICO DE GUMBALL" />
       </div>
-      <span>{universidad[1].descripcion}</span>
+      
     </div>
 
   )
