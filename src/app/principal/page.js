@@ -2,20 +2,36 @@
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import './page.modul.css'
-import Chip from '../../components/Chip/Chip.jsx'
+import ChipA from '../../components/ChipOriginal/ChipO.jsx'
 import { useState } from 'react'
 import { useEffect } from 'react';
 import BotonCalif from '@/components/BotonCalif/BotonCalif'
-//import citasAc from '../../api/citasAc'
-import CitasApi from '../api/citas'
+
+import citasAc from '../api/citas.js'
 
 import FilterNames from '@/components/FilterNames/FilterNames'
 
 const pDocentes = () => {
-
-
+    const citaDefault = {id: 1,
+    idPersonaDocente: 0, 
+    idPersonaAlumno: 0, 
+    Fecha: "", 
+    horainicio: "", 
+    horafin:"", 
+    enlaceSesion:"https://www.flaticon.es/icono-gratis/enlace_1063309", 
+    estado:"", 
+    idCurso: 0}
+    const [ citas, setCitas ] = useState([])
+    const [ cita, setCita ] = useState(citaDefault)
     var loggedIn = JSON.parse(localStorage.getItem('loggedIn'))
-    const arr = CitasApi.findAll();
+
+    const handleOnLoad = async () => {
+        const arr = await citasAc.findAll(citaDefault);
+        setCitas(arr.data);
+    }
+    useEffect(() => {
+        handleOnLoad();
+    }, [])
 
     return(
     <div>
@@ -24,7 +40,15 @@ const pDocentes = () => {
       <p className='welcome-text'>¡Bienvenido , {loggedIn.nombre}!  </p>
       <div className='welcome-line'></div>
       <div className='block-citas'>
-          
+
+          <p>Proximas Citas</p>
+          <div className='citas'>
+                  {
+                      citas.map(citas=>{
+                          return (<div className='fr' key={citas.id}><ChipA inicial={citas.estado} nombre={citas.estado} fecha={citas.Fecha}/> </div>)
+                      })
+                  }
+          </div>
       
         </div>
         <div className='espacio'></div>
@@ -37,7 +61,13 @@ const pDocentes = () => {
     <div className='welcome-line'></div>
     <div className='block-citas'>
         <p>Proximas Citas</p>
-        
+        <div className='citas'>
+                  {
+                      citas.map(citas=>{
+                          return (<div className='fr' key={citas.id}><ChipA inicial={citas.estado} nombre={citas.estado} fecha={citas.Fecha}/> </div>)
+                      })
+                  }
+        </div>
     
       </div>
       

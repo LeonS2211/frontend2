@@ -54,7 +54,7 @@ const handleClick5 = () => {
       <head>
 
       </head>
-      <body className='body'>
+      <body className='background'>
       {(loggedIn === null) ? 
       <div>
         <header className='cabecera'>
